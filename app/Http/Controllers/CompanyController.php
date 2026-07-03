@@ -61,23 +61,25 @@ class CompanyController extends Controller
      */
     public function update(Request $request)
     {
+       $validated = $request->validate([
+        'company_name' => 'required|max:255',
+        'company_short_name' => 'nullable|max:255',
+        'address' => 'nullable',
+        'phone' => 'nullable|max:100',
+        'email' => 'nullable|email',
+        'website' => 'nullable|max:255',
+        'npwp' => 'nullable|max:100',
+        'nib' => 'nullable|max:100',
+        'director_name' => 'nullable|max:255',
+        'tax_name' => 'nullable|max:255',
+        'is_active' => 'nullable|boolean',
+    ]);
+
        $company = Company::first();
 
-       $company->update($request->only([
-        'company_name',
-        'company_short_name',
-        'address',
-        'phone',
-        'email',
-        'website',
-        'npwp',
-        'nib',
-        'director_name',
-        'tax_name',
-        'is_active',
-       ]));
+       $company->update($validated);
 
-       return back()->with('success', 'Company profile updated successfully.');
+       return back()->with('success', 'Company Profile updated successfully.');
     }
 
     /**

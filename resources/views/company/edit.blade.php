@@ -8,16 +8,43 @@
     <div class="py-8">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
 
+            @if (session('success'))
+                <div class="mb-4 rounded-lg bg-green-100 p-4 text-green-700">
+                    {{ session('success') }}
+                </div>
+            @endif
+
             <div class="bg-white shadow rounded-lg p-6">
 
-                <h1 class="text-2xl font-bold mb-4">
-                    Company Profile
-                </h1>
+                <form method="POST" action="{{ route('company.update') }}">
 
-                <p>
-                    Company Name :
-                    <strong>{{ $company->company_name ?: 'Belum diisi' }}</strong>
-                </p>
+                    @csrf
+                    @method('PUT')
+
+                    <div>
+                        <x-input-label for="company_name" value="Company Name" />
+
+                        <x-text-input
+                            id="company_name"
+                            name="company_name"
+                            type="text"
+                            class="mt-1 block w-full"
+                            :value="old('company_name', $company->company_name)"
+                        />
+
+                        <x-input-error
+                            :messages="$errors->get('company_name')"
+                            class="mt-2"
+                        />
+                    </div>
+
+                    <div class="mt-6">
+                        <x-primary-button>
+                            Save Company
+                        </x-primary-button>
+                    </div>
+
+                </form>
 
             </div>
 
