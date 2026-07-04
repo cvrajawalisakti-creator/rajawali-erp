@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -23,6 +24,8 @@ Route::middleware('auth')->group(function () {
 
     Route::put('/company', [CompanyController::class, 'update'])
         ->name('company.update');
+
+    Route::resource('customers', CustomerController::class);     
 });
 
 require __DIR__.'/auth.php';
