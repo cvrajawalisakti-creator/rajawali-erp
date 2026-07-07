@@ -29,13 +29,22 @@
         <nav class="p-4 space-y-2">
 
             <a href="{{ route('dashboard') }}"
-               class="block rounded-lg px-4 py-2 hover:bg-slate-800">
-                Dashboard
+                class="{{ request()->routeIs('dashboard') ? 'block rounded-lg px-4 py-2 bg-slate-700 text-white font-medium' : 'block rounded-lg px-4 py-2 hover:bg-slate-800' }}">
+                 Dashboard
             </a>
 
             <a href="{{ route('company.edit') }}"
-               class="block rounded-lg px-4 py-2 hover:bg-slate-800">
-                Company Profile
+                class="{{ request()->routeIs('company.*')
+                    ? 'block rounded-lg px-4 py-2 bg-slate-700 text-white font-medium'
+                    : 'block rounded-lg px-4 py-2 hover:bg-slate-800' }}">
+                 Company Profile
+            </a>
+
+            <a href="{{ route('customers.index') }}"
+                class="{{ request()->routeIs('customers.*')
+                    ? 'block rounded-lg px-4 py-2 bg-slate-700 text-white font-medium'
+                    : 'block rounded-lg px-4 py-2 hover:bg-slate-800' }}">
+                 Customer Master
             </a>
 
         </nav>
@@ -46,7 +55,7 @@
     <div class="flex-1 flex flex-col">
 
         {{-- Topbar --}}
-        <header class="h-16 bg-white border-b flex items-center justify-between px-8">
+        <header class="bg-white border-b flex items-center justify-between px-8 py-5">
 
             <div>
                 @isset($header)

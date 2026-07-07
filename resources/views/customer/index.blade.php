@@ -7,6 +7,16 @@
         />
     </x-slot>
 
+    @if(session('success'))
+
+        <div class="mb-6 rounded-lg border border-green-300 bg-green-100 p-4 text-green-700">
+
+            ✅ {{ session('success') }}
+
+        </div>
+
+    @endif
+
     <x-card class="p-6">
 
         <div class="flex justify-between items-center mb-6">
@@ -112,7 +122,7 @@
                                 </a>
 
                             </td>
-                            
+
                         </tr>
 
                     @empty
