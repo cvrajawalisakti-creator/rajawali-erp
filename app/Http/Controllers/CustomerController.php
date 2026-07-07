@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreCustomerRequest;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 
@@ -28,9 +29,32 @@ class CustomerController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreCustomerRequest $request)
     {
-        //
+        $lastCustomer = Customer::orderBy('id', 'desc')->first();
+
+        if ($lastCustomer) {
+            $number = (int) substr($lastCustomer->customer_code, 4) + 1;
+        } else {
+            $number = 1;
+        }
+
+        $customerCode = 'CUST' . str_pad($number, 5, '0', STR_PAD_LEFT);
+
+        Customer::create([
+            'customer_code'  => $customerCode,
+            'customer_name'  => $request->customer_name,
+            'contact_person' => $request->contact_person,
+            'phone'          => $request->phone,
+            'email'          => $request->email,
+            'address'        => $request->address,
+            'npwp'           => $request->npwp,
+            'is_active'      => true,
+        ]);
+
+        return redirect()
+            ->route('customers.index')
+            ->with('success', 'Customer created successfully.');
     }
 
     /**

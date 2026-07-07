@@ -15,10 +15,13 @@
                 Customer List
             </h2>
 
-            <button
+            <a
+                href="{{ route('customers.create') }}"
                 class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
+
                 + Add Customer
-            </button>
+
+            </a>
 
         </div>
 
@@ -60,16 +63,72 @@
 
                 <tbody>
 
-                    <tr>
+                    @forelse($customers as $customer)
 
-                        <td colspan="6"
-                            class="px-4 py-12 text-center text-slate-400">
+                        <tr class="border-b hover:bg-slate-50">
 
-                            No customer data.
+                            <td class="px-4 py-3">
+                                {{ $customer->customer_code }}
+                            </td>
 
-                        </td>
+                            <td class="px-4 py-3">
+                                {{ $customer->customer_name }}
+                            </td>
 
-                    </tr>
+                            <td class="px-4 py-3">
+                                {{ $customer->contact_person }}
+                            </td>
+
+                            <td class="px-4 py-3">
+                                {{ $customer->phone }}
+                            </td>
+
+                            <td class="px-4 py-3 text-center">
+
+                                @if($customer->is_active)
+
+                                    <span class="text-green-600 font-medium">
+                                        Active
+                                    </span>
+
+                                @else
+
+                                    <span class="text-red-600 font-medium">
+                                        Inactive
+                                    </span>
+
+                                @endif
+
+                            </td>
+
+                            <td class="px-4 py-3 text-center">
+
+                                <a
+                                    href="{{ route('customers.edit', $customer) }}"
+                                    class="text-blue-600 hover:underline">
+
+                                    Edit
+
+                                </a>
+
+                            </td>
+                            
+                        </tr>
+
+                    @empty
+
+                        <tr>
+
+                            <td colspan="6"
+                                class="px-4 py-12 text-center text-slate-400">
+
+                                No customer data.
+
+                            </td>
+
+                        </tr>
+
+                    @endforelse
 
                 </tbody>
 

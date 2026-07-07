@@ -9,7 +9,8 @@
 
     <x-card class="p-6">
 
-        <form>
+        <form method="POST" action="{{ route('customers.store') }}">
+            @csrf
 
             <div class="grid grid-cols-2 gap-6">
 
@@ -32,7 +33,15 @@
 
                     <input
                         type="text"
+                        name="customer_name"
+                        value="{{ old('customer_name') }}"
                         class="w-full rounded-lg border-slate-300">
+                        
+                    @error('customer_name')
+                        <p class="text-red-600 text-sm mt-1">
+                            {{ $message }}
+                        </p>
+                    @enderror
                 </div>
 
                 <div>
@@ -42,7 +51,14 @@
 
                     <input
                         type="text"
+                        name="contact_person"
+                        value="{{ old('contact_person') }}"
                         class="w-full rounded-lg border-slate-300">
+                    @error('contact_person')
+                        <p class="text-red-600 text-sm mt-1">
+                            {{ $message }}
+                        </p>
+                    @enderror    
                 </div>
 
                 <div>
@@ -52,6 +68,8 @@
 
                     <input
                         type="text"
+                        name="phone"
+                        value="{{ old('phone') }}"
                         class="w-full rounded-lg border-slate-300">
                 </div>
 
@@ -62,6 +80,20 @@
 
                     <input
                         type="email"
+                        name="email"
+                        value="{{ old('email') }}"
+                        class="w-full rounded-lg border-slate-300">
+                </div>
+
+                <div class="col-span-2">
+                <label class="block text-sm font-medium mb-2">
+                        NPWP
+                    </label>
+
+                    <input
+                        type="text"
+                        name="npwp"
+                        value="{{ old('npwp') }}"
                         class="w-full rounded-lg border-slate-300">
                 </div>
 
@@ -71,18 +103,17 @@
                     </label>
 
                     <textarea
+                        name="address"
                         rows="4"
-                        class="w-full rounded-lg border-slate-300"></textarea>
+                        class="w-full rounded-lg border-slate-300">{{ old('address') }}</textarea>
                 </div>
 
             </div>
 
             <div class="mt-8 flex gap-3">
 
-                <x-primary-button>
-
+                <x-primary-button type="submit">
                     Save Customer
-
                 </x-primary-button>
 
                 <a
