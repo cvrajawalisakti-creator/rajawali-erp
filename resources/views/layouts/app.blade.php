@@ -54,6 +54,12 @@
                   Supplier Master
             </a>
 
+            <a href="{{ route('items.index') }}"
+                class="block px-5 py-3 rounded-lg
+                {{ request()->routeIs('items.*') ? 'bg-slate-600 text-white' : 'hover:bg-slate-700' }}">
+                Item Master
+            </a>
+
         </nav>
 
     </aside>

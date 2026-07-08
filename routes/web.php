@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,7 +29,9 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('customers', CustomerController::class);     
 
-    Route::resource('suppliers', \App\Http\Controllers\SupplierController::class);
+    Route::resource('suppliers', SupplierController::class);
+
+    Route::resource('items', ItemController::class);
 
     });
 
