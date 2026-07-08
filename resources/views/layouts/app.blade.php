@@ -47,6 +47,13 @@
                  Customer Master
             </a>
 
+            <a href="{{ route('suppliers.index') }}"
+                class="{{ request()->routeIs('suppliers.*')
+                    ? 'block rounded-lg px-4 py-2 bg-slate-700 text-white font-medium'
+                    : 'block rounded-lg px-4 py-2 hover:bg-slate-800' }}">
+                  Supplier Master
+            </a>
+
         </nav>
 
     </aside>
