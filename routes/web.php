@@ -26,6 +26,9 @@ Route::middleware('auth')->group(function () {
         ->name('company.update');
 
     Route::resource('customers', CustomerController::class);     
-});
+
+    Route::resource('suppliers', \App\Http\Controllers\SupplierController::class);
+
+    });
 
 require __DIR__.'/auth.php';
