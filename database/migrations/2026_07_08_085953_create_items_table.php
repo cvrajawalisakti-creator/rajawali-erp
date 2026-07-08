@@ -27,6 +27,8 @@ return new class extends Migration
                 'Raw Material',
                 'Component',
                 'Purchased Part',
+                'Consumable',
+                'Tool',
                 'Service',
                 'Customer Material',
             ]);

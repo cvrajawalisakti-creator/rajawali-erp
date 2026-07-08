@@ -115,6 +115,14 @@
                             {{ old('item_type', $item->item_type) == 'Purchased Part' ? 'selected' : '' }}>
                             Purchased Part
                         </option>
+                        <option value="Consumable"
+                            {{ old('item_type', $item->item_type) == 'Consumable' ? 'selected' : '' }}>
+                            Consumable
+                        </option>
+                        <option value="Tool"
+                            {{ old('item_type', $item->item_type) == 'Tool' ? 'selected' : '' }}>
+                            Tool
+                        </option>
                         <option value="Service"
                             {{ old('item_type', $item->item_type) == 'Service' ? 'selected' : '' }}>
                             Service
