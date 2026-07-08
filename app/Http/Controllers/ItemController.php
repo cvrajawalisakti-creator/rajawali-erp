@@ -42,14 +42,26 @@ class ItemController extends Controller
         $itemCode = 'ITM' . str_pad($number, 5, '0', STR_PAD_LEFT);
 
         Item::create([
-            'item_code'      => $itemCode,
-            'item_name'      => $request->item_name,
-            'alias'          => $request->alias,
-            'item_type'      => $request->item_type,
-            'category'       => $request->category,
-            'material_type'  => $request->material_type,
-            'unit'           => $request->unit,
-            'is_active'      => true,
+            'item_code'             => $itemCode,
+            'item_name'             => $request->item_name,
+            'alias'                 => $request->alias,
+            'item_type'             => $request->item_type,
+            'category'              => $request->category,
+            'material_type'         => $request->material_type,
+            'unit'                  => $request->unit,
+            'drawing_number'        => $request->drawing_number,
+            'revision'              => $request->revision,
+            'customer_part_number'  => $request->customer_part_number,
+
+            'minimum_stock'         => $request->minimum_stock ?? 0,
+            'reorder_level'         => $request->reorder_level ?? 0,
+            'lead_time'             => $request->lead_time ?? 0,
+
+            'standard_cost'         => $request->standard_cost ?? 0,
+            'last_purchase_price'   => $request->last_purchase_price ?? 0,
+
+            'remarks'               => $request->remarks,
+            'is_active'             => true,
         ]);
 
         return redirect()
@@ -79,12 +91,24 @@ class ItemController extends Controller
     public function update(UpdateItemRequest $request, Item $item)
     {
         $item->update([
-            'item_name'      => $request->item_name,
-            'alias'          => $request->alias,
-            'item_type'      => $request->item_type,
-            'category'       => $request->category,
-            'material_type'  => $request->material_type,
-            'unit'           => $request->unit,
+            'item_name'             => $request->item_name,
+            'alias'                 => $request->alias,
+            'item_type'             => $request->item_type,
+            'category'              => $request->category,
+            'material_type'         => $request->material_type,
+            'unit'                  => $request->unit,
+            'drawing_number'        => $request->drawing_number,
+            'revision'              => $request->revision,
+            'customer_part_number'  => $request->customer_part_number,
+
+            'minimum_stock'         => $request->minimum_stock ?? 0,
+            'reorder_level'         => $request->reorder_level ?? 0,
+            'lead_time'             => $request->lead_time ?? 0,
+
+            'standard_cost'         => $request->standard_cost ?? 0,
+            'last_purchase_price'   => $request->last_purchase_price ?? 0,
+
+            'remarks'               => $request->remarks,
         ]);
 
         return redirect()

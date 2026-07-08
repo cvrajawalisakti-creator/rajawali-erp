@@ -16,13 +16,26 @@ class StoreItemRequest extends FormRequest
     {
         return [
 
-            'item_name'      => 'required|max:255',
-            'alias'          => 'nullable|max:255',
-            'item_type'      => 'required|max:100',
-            'category'       => 'nullable|max:255',
-            'material_type'  => 'nullable|max:255',
-            'unit'           => 'required|max:50',
-            'is_active'      => 'nullable|boolean',
+            'item_name'             => 'required|max:255',
+            'alias'                 => 'nullable|max:255',
+
+            'item_type'             => 'required',
+            'category'              => 'nullable|max:255',
+            'material_type'         => 'nullable|max:255',
+            'unit'                  => 'required|max:50',
+
+            'drawing_number'        => 'nullable|max:255',
+            'revision'              => 'nullable|max:50',
+            'customer_part_number'  => 'nullable|max:255',
+
+            'minimum_stock'         => 'nullable|numeric',
+            'reorder_level'         => 'nullable|numeric',
+            'lead_time'             => 'nullable|integer',
+
+            'standard_cost'         => 'nullable|numeric',
+            'last_purchase_price'   => 'nullable|numeric',
+
+            'remarks'               => 'nullable',
 
         ];
     }
