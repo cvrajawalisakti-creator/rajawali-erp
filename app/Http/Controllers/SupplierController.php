@@ -82,7 +82,22 @@ class SupplierController extends Controller
      */
     public function update(UpdateSupplierRequest $request, Supplier $supplier)
     {
-        //
+        $supplier->update([
+            'supplier_name'  => $request->supplier_name,
+            'contact_person' => $request->contact_person,
+            'phone'          => $request->phone,
+            'email'          => $request->email,
+            'address'        => $request->address,
+            'npwp'           => $request->npwp,
+            'bank_name'      => $request->bank_name,
+            'account_number' => $request->account_number,
+            'account_holder' => $request->account_holder,
+            'payment_term'   => $request->payment_term,
+        ]);
+
+        return redirect()
+            ->route('suppliers.index')
+            ->with('success', 'Supplier updated successfully.');
     }
 
     /**
@@ -90,6 +105,10 @@ class SupplierController extends Controller
      */
     public function destroy(Supplier $supplier)
     {
-        //
+        $supplier->delete();
+
+        return redirect()
+            ->route('suppliers.index')
+            ->with('success', 'Supplier deleted successfully.');
     }
 }
