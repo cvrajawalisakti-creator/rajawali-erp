@@ -6,6 +6,7 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MasterProcessController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -32,6 +33,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('suppliers', SupplierController::class);
 
     Route::resource('items', ItemController::class);
+
+    Route::resource('master-processes', MasterProcessController::class);
 
     });
 

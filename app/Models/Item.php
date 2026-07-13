@@ -3,11 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\BomHeader;
+use App\Models\BomDetail;
 
 class Item extends Model
 {
     protected $fillable = [
-
+        
         'item_code',
         'item_name',
         'alias',
@@ -32,4 +34,14 @@ class Item extends Model
 
         'is_active',
     ];
+
+    public function bomHeaders()
+    {
+        return $this->hasMany(BomHeader::class, 'finished_good_item_id');
+    }
+
+    public function bomComponents()
+    {
+       return $this->hasMany(BomDetail::class, 'component_item_id');
+    }
 }
