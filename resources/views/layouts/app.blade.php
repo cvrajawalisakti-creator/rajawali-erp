@@ -29,37 +29,55 @@
         <nav class="p-4 space-y-2">
 
             <a href="{{ route('dashboard') }}"
-                class="{{ request()->routeIs('dashboard') ? 'block rounded-lg px-4 py-2 bg-slate-700 text-white font-medium' : 'block rounded-lg px-4 py-2 hover:bg-slate-800' }}">
+                class="{{ request()->routeIs('dashboard')
+                    ? 'block rounded-lg px-4 py-2 bg-slate-700 text-white font-medium'
+                    : 'block rounded-lg px-4 py-2 hover:bg-slate-800' }}">
                  Dashboard
             </a>
 
-            <a href="{{ route('company.edit') }}"
+            <div class="pt-4 pb-2 px-4 text-xs font-semibold uppercase text-slate-400">
+                Master Data
+            </div>
+                <a href="{{ route('company.edit') }}"
                 class="{{ request()->routeIs('company.*')
                     ? 'block rounded-lg px-4 py-2 bg-slate-700 text-white font-medium'
                     : 'block rounded-lg px-4 py-2 hover:bg-slate-800' }}">
                  Company Profile
-            </a>
+                </a>
 
-            <a href="{{ route('customers.index') }}"
-                class="{{ request()->routeIs('customers.*')
-                    ? 'block rounded-lg px-4 py-2 bg-slate-700 text-white font-medium'
-                    : 'block rounded-lg px-4 py-2 hover:bg-slate-800' }}">
-                 Customer Master
-            </a>
+                <a href="{{ route('customers.index') }}"
+                    class="{{ request()->routeIs('customers.*')
+                        ? 'block rounded-lg px-4 py-2 bg-slate-700 text-white font-medium'
+                        : 'block rounded-lg px-4 py-2 hover:bg-slate-800' }}">
+                    Customer Master
+                </a>
 
-            <a href="{{ route('suppliers.index') }}"
-                class="{{ request()->routeIs('suppliers.*')
-                    ? 'block rounded-lg px-4 py-2 bg-slate-700 text-white font-medium'
-                    : 'block rounded-lg px-4 py-2 hover:bg-slate-800' }}">
-                  Supplier Master
-            </a>
+                <a href="{{ route('suppliers.index') }}"
+                    class="{{ request()->routeIs('suppliers.*')
+                        ? 'block rounded-lg px-4 py-2 bg-slate-700 text-white font-medium'
+                        : 'block rounded-lg px-4 py-2 hover:bg-slate-800' }}">
+                    Supplier Master
+                </a>
 
-            <a href="{{ route('items.index') }}"
-                class="block px-5 py-3 rounded-lg
-                {{ request()->routeIs('items.*') ? 'bg-slate-600 text-white' : 'hover:bg-slate-700' }}">
-                Item Master
-            </a>
+                <a href="{{ route('items.index') }}"
+                    class="{{ request()->routeIs('items.*')
+                        ? 'block rounded-lg px-4 py-2 bg-slate-700 text-white font-medium'
+                        : 'block rounded-lg px-4 py-2 hover:bg-slate-800' }}">
+                    Item Master
+                </a>
 
+                <a href="{{ route('master-processes.index') }}"
+                    class="{{ request()->routeIs('master-processes.*')
+                        ? 'block rounded-lg px-4 py-2 bg-slate-700 text-white font-medium'
+                        : 'block rounded-lg px-4 py-2 hover:bg-slate-800' }}">
+                    Process Master
+                </a>
+
+            <div class="pt-4 pb-2 px-4 text-xs font-semibold uppercase text-slate-400">
+                Engineering
+            </div>
+
+                {{-- BOM nanti di sini --}}
         </nav>
 
     </aside>
