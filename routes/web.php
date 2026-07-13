@@ -36,6 +36,8 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('master-processes', MasterProcessController::class);
 
+    Route::resource('boms', BomController::class);
+    
     });
 
 require __DIR__.'/auth.php';

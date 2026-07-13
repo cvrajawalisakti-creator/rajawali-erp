@@ -25,8 +25,11 @@ class BomHeader extends Model
     protected function casts(): array
     {
         return [
+
             'effective_date' => 'date',
+
             'is_active' => 'boolean',
+
         ];
     }
 
