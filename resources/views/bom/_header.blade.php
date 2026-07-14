@@ -1,3 +1,5 @@
+
+
 <x-card class="p-6">
 
     <h2 class="text-lg font-semibold mb-6">
@@ -17,7 +19,7 @@
 
                 <option value="">-- Select Item --</option>
 
-                @foreach($items as $item)
+                @foreach($finishedGoods as $item)
 
                     <option
                         value="{{ $item->id }}"

@@ -7,6 +7,7 @@
         </h2>
 
         <button
+            id="btn-add-material"
             type="button"
             class="px-4 py-2 bg-blue-600 text-white rounded-lg">
 
@@ -52,7 +53,7 @@
 
             </thead>
 
-            <tbody>
+            <tbody id="materials-body">
 
                 <tr>
 
@@ -137,7 +138,7 @@
 
                         <button
                             type="button"
-                            class="text-red-600">
+                            class="btn-delete-material text-red-600">
 
                             🗑
 
