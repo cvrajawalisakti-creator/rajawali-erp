@@ -55,21 +55,46 @@
 
             <tbody id="materials-body">
 
+            @php
+
+                $materials = old(
+                    'materials',
+                    isset($bomHeader)
+                        ? $bomHeader->details->toArray()
+                        : [[
+                            'component_item_id' => '',
+                            'usage_type' => 'Material',
+                            'qty' => 1,
+                            'yield_percent' => 100,
+                            'remarks' => '',
+                        ]]
+                );
+
+            @endphp
+
+            @foreach($materials as $index => $material)
+
                 <tr>
 
                     <td class="p-2">
 
                         <select
-                            name="materials[0][component_item_id]"
+                            name="materials[{{ $index }}][component_item_id]"
                             class="w-full rounded-lg border-slate-300">
 
                             <option value="">
-                            -- Select Item --
+                                -- Select Item --
                             </option>
 
                             @foreach($components as $item)
 
-                                <option value="{{ $item->id }}">
+                                <option
+                                    value="{{ $item->id }}"
+                                    {{
+                                        ($material['component_item_id'] ?? '') == $item->id
+                                        ? 'selected'
+                                        : ''
+                                    }}>
 
                                     {{ $item->item_code }}
                                     |
@@ -77,7 +102,7 @@
                                     |
                                     {{ $item->item_name }}
 
-                            </option>
+                                </option>
 
                             @endforeach
 
@@ -88,15 +113,31 @@
                     <td class="p-2">
 
                         <select
-                            name="materials[0][usage_type]"
+                            name="materials[{{ $index }}][usage_type]"
                             class="w-full rounded-lg border-slate-300">
 
-                            <option value="Material" selected>
+                            <option
+                                value="Material"
+                                {{
+                                    ($material['usage_type'] ?? '') == 'Material'
+                                    ? 'selected'
+                                    : ''
+                                }}>
+
                                 Material
+
                             </option>
 
-                            <option value="Consumable">
+                            <option
+                                value="Consumable"
+                                {{
+                                    ($material['usage_type'] ?? '') == 'Consumable'
+                                    ? 'selected'
+                                    : ''
+                                }}>
+
                                 Consumable
+
                             </option>
 
                         </select>
@@ -107,9 +148,9 @@
 
                         <input
                             type="number"
-                            name="materials[0][qty]"
                             step="0.0001"
-                            value="1"
+                            name="materials[{{ $index }}][qty]"
+                            value="{{ $material['qty'] ?? 1 }}"
                             class="w-full rounded-lg border-slate-300">
 
                     </td>
@@ -118,9 +159,9 @@
 
                         <input
                             type="number"
-                            name="materials[0][yield_percent]"
                             step="0.01"
-                            value="100"
+                            name="materials[{{ $index }}][yield_percent]"
+                            value="{{ $material['yield_percent'] ?? 100 }}"
                             class="w-full rounded-lg border-slate-300">
 
                     </td>
@@ -129,7 +170,8 @@
 
                         <input
                             type="text"
-                            name="materials[0][remarks]"
+                            name="materials[{{ $index }}][remarks]"
+                            value="{{ $material['remarks'] ?? '' }}"
                             class="w-full rounded-lg border-slate-300">
 
                     </td>
@@ -148,6 +190,7 @@
 
                 </tr>
 
+            @endforeach
             </tbody>
 
         </table>
@@ -155,3 +198,83 @@
     </div>
 
 </x-card>
+
+@push('scripts')
+
+<script>
+
+let materialIndex = document.querySelectorAll('#materials-body tr').length;
+
+document
+.getElementById('btn-add-material')
+.addEventListener('click', function () {
+
+    const tbody = document.getElementById('materials-body');
+
+    const row = tbody.rows[0].cloneNode(true);
+
+    row.querySelectorAll('select,input').forEach(function(el){
+
+        if(el.name){
+
+            el.name = el.name.replace(/\[\d+\]/, '[' + materialIndex + ']');
+
+        }
+
+        if(el.tagName === 'INPUT'){
+
+            if(el.type === 'text'){
+
+                el.value='';
+
+            }
+
+            if(el.type === 'number'){
+
+                if(el.name.includes('yield_percent')){
+
+                    el.value=100;
+
+                }else{
+
+                    el.value=1;
+
+                }
+
+            }
+
+        }
+
+        if(el.tagName==='SELECT'){
+
+            el.selectedIndex=0;
+
+        }
+
+    });
+
+    tbody.appendChild(row);
+
+    materialIndex++;
+
+});
+
+document.addEventListener('click',function(e){
+
+    if(e.target.classList.contains('btn-delete-material')){
+
+        const rows=document.querySelectorAll('#materials-body tr');
+
+        if(rows.length>1){
+
+            e.target.closest('tr').remove();
+
+        }
+
+    }
+
+});
+
+</script>
+
+@endpush

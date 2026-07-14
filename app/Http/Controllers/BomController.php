@@ -154,7 +154,34 @@ class BomController extends Controller
      */
     public function edit(BomHeader $bomHeader)
     {
-        //
+        $bomHeader->load([
+            'finishedGood',
+            'details.item',
+            'processes.process',
+        ]);
+
+        $finishedGoods = Item::whereIn('item_type', [
+                'Finished Good',
+                'Semi Finished',
+            ])
+            ->where('is_active', true)
+            ->orderBy('item_name')
+            ->get();
+
+        $components = Item::where('is_active', true)
+            ->orderBy('item_name')
+            ->get();
+
+        $processes = MasterProcess::where('is_active', true)
+            ->orderBy('process_name')
+            ->get();
+
+        return view('bom.edit', [
+            'bomHeader'      => $bomHeader,
+            'finishedGoods'  => $finishedGoods,
+            'components'     => $components,
+            'processes'      => $processes,
+        ]);
     }
 
     /**
@@ -162,7 +189,99 @@ class BomController extends Controller
      */
     public function update(UpdateBomRequest $request, BomHeader $bomHeader)
     {
-        //
+        DB::transaction(function () use ($request, $bomHeader) {
+
+            // ==========================================
+            // Update Header
+            // ==========================================
+
+            $bomHeader->update([
+
+                'finished_good_item_id' => $request->finished_good_item_id,
+
+                'revision' => $request->revision,
+
+                'effective_date' => $request->effective_date,
+
+                'description' => $request->description,
+
+            ]);
+
+            // ==========================================
+            // Delete Detail Lama
+            // ==========================================
+
+            $bomHeader->details()->delete();
+
+            // ==========================================
+            // Insert Detail Baru
+            // ==========================================
+
+            $sequence = 10;
+
+            foreach ($request->materials as $material) {
+
+                BomDetail::create([
+
+                    'bom_header_id'     => $bomHeader->id,
+
+                    'component_item_id' => $material['component_item_id'],
+
+                    'usage_type'        => $material['usage_type'],
+
+                    'qty'               => $material['qty'],
+
+                    'yield_percent'     => $material['yield_percent'],
+
+                    'sequence'          => $sequence,
+
+                    'remarks'           => $material['remarks'] ?? null,
+
+                ]);
+
+                $sequence += 10;
+
+            }
+
+            // ==========================================
+            // Delete Process Lama
+            // ==========================================
+
+            $bomHeader->processes()->delete();
+
+            // ==========================================
+            // Insert Process Baru
+            // ==========================================
+
+            $sequence = 10;
+
+            foreach ($request->processes as $process) {
+
+                BomProcess::create([
+
+                    'bom_header_id' => $bomHeader->id,
+
+                    'process_id' => $process['process_id'],
+
+                    'sequence' => $sequence,
+
+                    'parameter_value' => $process['parameter_value'] ?? null,
+
+                    'parameter_unit' => $process['parameter_unit'] ?? null,
+
+                    'remarks' => $process['remarks'] ?? null,
+
+                ]);
+
+                $sequence += 10;
+
+            }
+
+        });
+
+        return redirect()
+            ->route('boms.show', $bomHeader)
+            ->with('success', 'BOM updated successfully.');
     }
 
     /**

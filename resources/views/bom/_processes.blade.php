@@ -51,25 +51,49 @@
 
             <tbody id="processes-body">
 
+            @php
+
+                $processRows = old(
+                    'processes',
+                    isset($bomHeader)
+                        ? $bomHeader->processes->toArray()
+                        : [[
+                            'process_id' => '',
+                            'parameter_value' => '',
+                            'parameter_unit' => '',
+                            'remarks' => '',
+                        ]]
+                );
+
+            @endphp
+
+            @foreach($processRows as $index => $process)
+
                 <tr>
 
                     <td class="p-2">
 
                         <select
-                            name="processes[0][process_id]"
+                            name="processes[{{ $index }}][process_id]"
                             class="w-full rounded-lg border-slate-300">
 
                             <option value="">
                                 -- Select Process --
                             </option>
 
-                            @foreach($processes as $process)
+                            @foreach($processes as $master)
 
-                                <option value="{{ $process->id }}">
+                                <option
+                                    value="{{ $master->id }}"
+                                    {{
+                                        ($process['process_id'] ?? '') == $master->id
+                                            ? 'selected'
+                                            : ''
+                                    }}>
 
-                                    {{ $process->process_code }}
+                                    {{ $master->process_code }}
                                     |
-                                    {{ $process->process_name }}
+                                    {{ $master->process_name }}
 
                                 </option>
 
@@ -83,8 +107,9 @@
 
                         <input
                             type="number"
-                            name="processes[0][parameter_value]"
                             step="0.0001"
+                            name="processes[{{ $index }}][parameter_value]"
+                            value="{{ $process['parameter_value'] ?? '' }}"
                             class="w-full rounded-lg border-slate-300">
 
                     </td>
@@ -93,7 +118,8 @@
 
                         <input
                             type="text"
-                            name="processes[0][parameter_unit]"
+                            name="processes[{{ $index }}][parameter_unit]"
+                            value="{{ $process['parameter_unit'] ?? '' }}"
                             class="w-full rounded-lg border-slate-300">
 
                     </td>
@@ -102,7 +128,8 @@
 
                         <input
                             type="text"
-                            name="processes[0][remarks]"
+                            name="processes[{{ $index }}][remarks]"
+                            value="{{ $process['remarks'] ?? '' }}"
                             class="w-full rounded-lg border-slate-300">
 
                     </td>
@@ -111,7 +138,7 @@
 
                         <button
                             type="button"
-                            class="btn-delete-process text-red-600 font-bold">
+                            class="btn-delete-process text-red-600">
 
                             🗑
 
@@ -121,6 +148,7 @@
 
                 </tr>
 
+            @endforeach
             </tbody>
 
         </table>
@@ -128,3 +156,65 @@
     </div>
 
 </x-card>
+
+@push('scripts')
+
+<script>
+
+let processIndex = document.querySelectorAll('#processes-body tr').length;
+
+document
+.getElementById('btn-add-process')
+.addEventListener('click', function () {
+
+    const tbody = document.getElementById('processes-body');
+
+    const row = tbody.rows[0].cloneNode(true);
+
+    row.querySelectorAll('select,input').forEach(function(el){
+
+        if(el.name){
+
+            el.name = el.name.replace(/\[\d+\]/, '[' + processIndex + ']');
+
+        }
+
+        if(el.tagName === 'INPUT'){
+
+            el.value='';
+
+        }
+
+        if(el.tagName === 'SELECT'){
+
+            el.selectedIndex=0;
+
+        }
+
+    });
+
+    tbody.appendChild(row);
+
+    processIndex++;
+
+});
+
+document.addEventListener('click',function(e){
+
+    if(e.target.classList.contains('btn-delete-process')){
+
+        const rows=document.querySelectorAll('#processes-body tr');
+
+        if(rows.length>1){
+
+            e.target.closest('tr').remove();
+
+        }
+
+    }
+
+});
+
+</script>
+
+@endpush
