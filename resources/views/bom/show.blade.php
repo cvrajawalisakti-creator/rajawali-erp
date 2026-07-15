@@ -7,11 +7,22 @@
         />
     </x-slot>
 
+    @if(session('success'))
+
+        <div
+            class="mb-6 rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-green-700">
+
+            {{ session('success') }}
+
+        </div>
+
+    @endif
+
     <div class="space-y-6">
 
         <x-card class="p-6">
 
-            <div class="flex justify-between">
+            <div class="flex justify-between items-start">
 
                 <div>
 
@@ -24,38 +35,32 @@
                     <div class="text-slate-500 mt-1">
 
                         {{ $bomHeader->finishedGood->item_code }}
+
                         -
+
                         {{ $bomHeader->finishedGood->item_name }}
 
                     </div>
 
                 </div>
 
-                <div class="text-right">
+                <div class="flex gap-2">
 
-                    <div>
+                    <a
+                        href="{{ route('boms.edit', $bomHeader->id) }}"
+                        class="px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600">
 
-                        <strong>Revision</strong>
+                        Edit
 
-                    </div>
+                    </a>
 
-                    <div>
+                    <a
+                        href="{{ route('boms.index') }}"
+                        class="px-4 py-2 border rounded-lg hover:bg-slate-100">
 
-                        {{ $bomHeader->revision }}
+                        Back
 
-                    </div>
-
-                    <div class="mt-3">
-
-                        <strong>Effective</strong>
-
-                    </div>
-
-                    <div>
-
-                        {{ optional($bomHeader->effective_date)->format('d/m/Y') }}
-
-                    </div>
+                    </a>
 
                 </div>
 
