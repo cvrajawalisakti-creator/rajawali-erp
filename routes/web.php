@@ -37,6 +37,16 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('master-processes', MasterProcessController::class);
 
+    Route::get(
+        'boms/{id}/revision',
+        [BomController::class, 'createRevision']
+    )->name('boms.revision.create');
+
+    Route::post(
+        'boms/{id}/revision',
+        [BomController::class, 'storeRevision']
+    )->name('boms.revision.store');
+
     Route::resource('boms', BomController::class);
     
     });

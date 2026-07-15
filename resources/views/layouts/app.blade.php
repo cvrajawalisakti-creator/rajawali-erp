@@ -77,7 +77,12 @@
                 Engineering
             </div>
 
-                {{-- BOM nanti di sini --}}
+            <a href="{{ route('boms.index') }}"
+                class="{{ request()->routeIs('boms.*')
+                    ? 'block rounded-lg px-4 py-2 bg-slate-700 text-white font-medium'
+                    : 'block rounded-lg px-4 py-2 hover:bg-slate-800' }}">
+                Bill of Materials
+            </a>
         </nav>
 
     </aside>

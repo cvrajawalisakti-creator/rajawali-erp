@@ -46,23 +46,31 @@
 
                 <div class="flex gap-2">
 
-                    <a
-                        href="{{ route('boms.edit', $bomHeader->id) }}"
-                        class="px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600">
+                <a
+                    href="{{ route('boms.edit', $bomHeader->id) }}"
+                    class="px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600">
 
-                        Edit
+                    Edit
 
-                    </a>
+                </a>
 
-                    <a
-                        href="{{ route('boms.index') }}"
-                        class="px-4 py-2 border rounded-lg hover:bg-slate-100">
+                <a
+                    href="{{ route('boms.revision.create', $bomHeader->id) }}"
+                    class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">
 
-                        Back
+                    New Revision
 
-                    </a>
+                </a>
 
-                </div>
+                <a
+                    href="{{ route('boms.index') }}"
+                    class="px-4 py-2 border rounded-lg hover:bg-slate-100">
+
+                    Back
+
+                </a>
+
+            </div>
 
             </div>
 
