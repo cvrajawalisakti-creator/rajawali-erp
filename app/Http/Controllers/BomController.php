@@ -138,7 +138,7 @@ class BomController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
+   public function show($id)
     {
         $bomHeader = BomHeader::with([
             'finishedGood',
@@ -146,7 +146,14 @@ class BomController extends Controller
             'processes.process',
         ])->findOrFail($id);
 
-        return view('bom.show', compact('bomHeader'));
+        $revisionHistory = BomHeader::where('bom_code', $bomHeader->bom_code)
+            ->orderByDesc('revision')
+            ->get();
+
+        return view('bom.show', compact(
+            'bomHeader',
+            'revisionHistory'
+        ));
     }
 
     /**
@@ -256,7 +263,73 @@ class BomController extends Controller
 
     public function storeRevision($id)
     {
-        //
+        $newBom = DB::transaction(function () use ($id) {
+
+            // Ambil BOM lama beserta detail dan prosesnya
+            $oldBom = BomHeader::with([
+                'details',
+                'processes',
+            ])->findOrFail($id);
+
+            // Cari nomor revisi terakhir
+            $lastRevision = BomHeader::where('bom_code', $oldBom->bom_code)
+                ->max('revision');
+
+            $lastNumber = (int) str_replace('R', '', $lastRevision);
+
+            $newRevision = 'R' . str_pad($lastNumber + 1, 2, '0', STR_PAD_LEFT);
+
+            // Nonaktifkan semua revisi BOM ini
+            BomHeader::where('bom_code', $oldBom->bom_code)
+                ->update([
+                    'is_active' => false,
+                ]);
+
+            // Buat Header baru
+            $newBom = BomHeader::create([
+                'bom_code'              => $oldBom->bom_code,
+                'finished_good_item_id' => $oldBom->finished_good_item_id,
+                'revision'              => $newRevision,
+                'effective_date'        => now(),
+                'description'           => $oldBom->description,
+                'is_active'             => true,
+            ]);
+
+            // Copy Materials
+            foreach ($oldBom->details as $detail) {
+
+                BomDetail::create([
+                    'bom_header_id'     => $newBom->id,
+                    'component_item_id' => $detail->component_item_id,
+                    'usage_type'        => $detail->usage_type,
+                    'qty'               => $detail->qty,
+                    'yield_percent'     => $detail->yield_percent,
+                    'sequence'          => $detail->sequence,
+                    'remarks'           => $detail->remarks,
+                ]);
+
+            }
+
+            // Copy Production Processes
+            foreach ($oldBom->processes as $process) {
+
+                BomProcess::create([
+                    'bom_header_id'   => $newBom->id,
+                    'process_id'      => $process->process_id,
+                    'sequence'        => $process->sequence,
+                    'parameter_value' => $process->parameter_value,
+                    'parameter_unit'  => $process->parameter_unit,
+                    'remarks'         => $process->remarks,
+                ]);
+
+            }
+
+            return $newBom;
+        });
+
+        return redirect()
+            ->route('boms.edit', $newBom->id)
+            ->with('success', 'New BOM Revision created successfully.');
     }
 
     /**

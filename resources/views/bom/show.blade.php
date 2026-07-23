@@ -54,13 +54,13 @@
 
                 </a>
 
-                <a
-                    href="{{ route('boms.revision.create', $bomHeader->id) }}"
-                    class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">
-
-                    New Revision
-
-                </a>
+                <form action="{{ route('boms.revision.store', $bomHeader->id) }}" method="POST" class="inline">
+                    @csrf
+                    <button type="submit"
+                        class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">
+                        New Revision
+                    </button>
+                </form>
 
                 <a
                     href="{{ route('boms.index') }}"
@@ -254,6 +254,83 @@
 
         </x-card>
 
-    </div>
+        <x-card class="p-6">
 
-</x-app-layout>
+            <h2 class="text-lg font-semibold mb-4">
+                Revision History
+            </h2>
+
+            <table class="min-w-full">
+
+                <thead class="bg-slate-100">
+
+                    <tr>
+                        <th class="p-3 text-center">Revision</th>
+                        <th class="p-3 text-center">Effective Date</th>
+                        <th class="p-3 text-center">Status</th>
+                        <th class="p-3 text-center">Action</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                @foreach($revisionHistory as $revision)
+
+                    <tr class="border-t">
+
+                        <td class="p-3 text-center">
+                            {{ $revision->revision }}
+                        </td>
+
+                        <td class="p-3 text-center">
+                            {{ optional($revision->effective_date)->format('d/m/Y') }}
+                        </td>
+
+                        <td class="p-3 text-center">
+
+                            @if($revision->is_active)
+                                <span class="px-2 py-1 rounded-full bg-green-100 text-green-700 text-xs font-semibold">
+                                    Active
+                                </span>
+                            @else
+                                <span class="px-2 py-1 rounded-full bg-slate-200 text-slate-700 text-xs font-semibold">
+                                    Inactive
+                                </span>
+                            @endif
+
+                        </td>
+
+                        <td class="p-3 text-center">
+
+                            @if($revision->id != $bomHeader->id)
+
+                                <a
+                                    href="{{ route('boms.show', $revision->id) }}"
+                                    class="text-blue-600 hover:underline">
+                                    View
+                                </a>
+
+                            @else
+
+                                <span class="text-green-600 font-semibold">
+                                    Current
+                                </span>
+
+                            @endif
+
+                        </td>
+
+                    </tr>
+
+                @endforeach
+
+                </tbody>
+
+            </table>
+
+        </x-card>
+
+        </div>
+
+        </x-app-layout>
