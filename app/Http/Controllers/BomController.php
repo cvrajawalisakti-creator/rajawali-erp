@@ -250,16 +250,7 @@ class BomController extends Controller
             ->with('success', 'BOM updated successfully.');
     }
 
-    public function createRevision($id)
-    {
-        $bomHeader = BomHeader::with([
-            'finishedGood',
-            'details.item',
-            'processes.process',
-        ])->findOrFail($id);
-
-        return view('bom.revision', compact('bomHeader'));
-    }
+    
 
     public function storeRevision($id)
     {
