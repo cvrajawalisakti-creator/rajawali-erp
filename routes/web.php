@@ -8,6 +8,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MasterProcessController;
 use App\Http\Controllers\BomController;
+use App\Http\Controllers\WorkOrderController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -43,6 +44,8 @@ Route::middleware('auth')->group(function () {
     )->name('boms.revision.store');
 
     Route::resource('boms', BomController::class);
+
+    Route::resource('work-orders', WorkOrderController::class);
     
     });
 
