@@ -76,9 +76,19 @@ class WorkOrderController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(WorkOrder $workOrder)
     {
-        //
+        $workOrder->load([
+            'finishedGood',
+            'bomHeader',
+            'materials.item',
+            'processes.process',
+        ]);
+
+        return view(
+            'work-order.show',
+            compact('workOrder')
+        );
     }
 
     /**
