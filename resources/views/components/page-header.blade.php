@@ -1,19 +1,33 @@
 @props([
-'title',
-'subtitle'=>null
+    'title',
+    'subtitle' => null,
 ])
 
-<div class="mb-6">
+<div class="mb-6 flex items-start justify-between">
 
-    <h1 class="text-2xl font-bold text-slate-800">
-        {{ $title }}
-    </h1>
+    <div>
 
-    @if($subtitle)
+        <h1 class="text-2xl font-bold text-slate-800">
+            {{ $title }}
+        </h1>
 
-        <p class="text-slate-500 mt-1">
-            {{ $subtitle }}
-        </p>
+        @if($subtitle)
+
+            <p class="mt-1 text-slate-500">
+                {{ $subtitle }}
+            </p>
+
+        @endif
+
+    </div>
+
+    @if(isset($actions))
+
+        <div class="shrink-0">
+
+            {{ $actions }}
+
+        </div>
 
     @endif
 

@@ -47,6 +47,16 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('work-orders', WorkOrderController::class);
     
+    Route::patch(
+        '/work-orders/{workOrder}/release',
+        [WorkOrderController::class, 'release']
+    )->name('work-orders.release');
+
     });
+
+    Route::patch(
+        '/work-orders/{workOrder}/start',
+        [WorkOrderController::class, 'start']
+    )->name('work-orders.start');
 
 require __DIR__.'/auth.php';
