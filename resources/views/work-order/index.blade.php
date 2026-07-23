@@ -1,115 +1,101 @@
 <x-app-layout>
 
     <x-slot name="header">
-        <x-page-header
-            title="Work Orders"
-            subtitle="Production Work Orders"
-        />
-    </x-slot>
+        <div class="flex items-center justify-between">
 
-    <div class="p-6">
-
-        @if(session('success'))
-
-            <div class="mb-6 rounded-lg bg-green-100 border border-green-300 text-green-800 px-4 py-3">
-
-                {{ session('success') }}
-
-            </div>
-
-        @endif
-
-        <div class="flex items-center justify-between mb-6">
-
-            <h2 class="text-xl font-semibold">
-
-                Work Order List
-
-            </h2>
+            <x-page-header
+                title="Work Orders"
+                subtitle="Manage production work orders"
+            />
 
             <a
                 href="{{ route('work-orders.create') }}"
-                class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg">
+                class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-lg font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700">
 
-                + New Work Order
+                New Work Order
 
             </a>
 
         </div>
+    </x-slot>
 
-        <div class="bg-white rounded-xl shadow overflow-x-auto">
+    @if(session('success'))
+        <div class="mb-4 rounded-lg bg-green-100 p-4 text-green-800">
+            {{ session('success') }}
+        </div>
+    @endif
 
-            <table class="min-w-full">
+    <div class="bg-white shadow rounded-xl overflow-hidden">
 
-                <thead class="bg-slate-100">
+        <table class="min-w-full divide-y divide-gray-200">
 
-                    <tr>
+            <thead class="bg-gray-50">
 
-                        <th class="px-4 py-3 text-left">
-                            WO Number
-                        </th>
+                <tr>
 
-                        <th class="px-4 py-3 text-left">
-                            Finished Good
-                        </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                        WO Number
+                    </th>
 
-                        <th class="px-4 py-3 text-center">
-                            Qty
-                        </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                        Date
+                    </th>
 
-                        <th class="px-4 py-3 text-center">
-                            Status
-                        </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                        Finished Good
+                    </th>
 
-                        <th class="px-4 py-3 text-center">
-                            Action
-                        </th>
+                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">
+                        Qty
+                    </th>
 
-                    </tr>
+                    <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">
+                        Status
+                    </th>
 
-                </thead>
+                    <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">
+                        Action
+                    </th>
 
-                <tbody>
+                </tr>
+
+            </thead>
+
+            <tbody class="divide-y divide-gray-200 bg-white">
 
                 @forelse($workOrders as $workOrder)
 
-                    <tr class="border-t hover:bg-slate-50">
+                    <tr>
 
-                        <td class="px-4 py-3">
-
+                        <td class="px-6 py-4">
                             {{ $workOrder->wo_number }}
-
                         </td>
 
-                        <td class="px-4 py-3">
-
-                            {{ $workOrder->finishedGood?->item_code }}
-
-                            -
-
-                            {{ $workOrder->finishedGood?->item_name }}
-
+                        <td class="px-6 py-4">
+                            {{ $workOrder->wo_date->format('d-m-Y') }}
                         </td>
 
-                        <td class="px-4 py-3 text-center">
-
-                            {{ number_format($workOrder->planned_qty, 2) }}
-
+                        <td class="px-6 py-4">
+                            {{ $workOrder->finishedGood->item_name }}
                         </td>
 
-                        <td class="px-4 py-3 text-center">
-
-                            <span class="px-2 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-semibold">
-
-                                {{ $workOrder->status }}
-
-                            </span>
-
+                        <td class="px-6 py-4 text-right">
+                            {{ number_format($workOrder->planned_qty,4) }}
                         </td>
 
-                        <td class="px-4 py-3 text-center">
+                        <td class="px-6 py-4 text-center">
+                            {{ $workOrder->status }}
+                        </td>
 
-                            -
+                        <td class="px-6 py-4 text-center">
+
+                            <a
+                                href="{{ route('work-orders.show',$workOrder) }}"
+                                class="text-indigo-600 hover:text-indigo-900">
+
+                                View
+
+                            </a>
 
                         </td>
 
@@ -119,11 +105,10 @@
 
                     <tr>
 
-                        <td
-                            colspan="5"
-                            class="text-center py-10 text-slate-500">
+                        <td colspan="6"
+                            class="px-6 py-8 text-center text-gray-500">
 
-                            No Work Orders Available
+                            No Work Orders found.
 
                         </td>
 
@@ -131,17 +116,15 @@
 
                 @endforelse
 
-                </tbody>
+            </tbody>
 
-            </table>
+        </table>
 
-        </div>
+    </div>
 
-        <div class="mt-6">
+    <div class="mt-6">
 
-            {{ $workOrders->links() }}
-
-        </div>
+        {{ $workOrders->links() }}
 
     </div>
 

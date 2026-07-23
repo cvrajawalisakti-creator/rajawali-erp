@@ -77,7 +77,7 @@
 
                 <tbody>
 
-                    @foreach($finishedGoods as $item)
+                    @forelse($items as $item)
 
                         <tr class="border-b hover:bg-slate-50">
 

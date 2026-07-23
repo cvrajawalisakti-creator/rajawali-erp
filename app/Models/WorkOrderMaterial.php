@@ -11,10 +11,19 @@ class WorkOrderMaterial extends Model
         'work_order_id',
         'item_id',
         'sequence',
-        'quantity',
+        'required_qty',
+        'issued_qty',
         'unit',
         'remarks',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'required_qty' => 'decimal:4',
+            'issued_qty' => 'decimal:4',
+        ];
+    }
 
     public function workOrder(): BelongsTo
     {

@@ -28,6 +28,18 @@ class WorkOrder extends Model
         'remarks',
     ];
 
+    protected function casts(): array
+    {
+        return [
+            'wo_date' => 'date',
+            'planned_start' => 'date',
+            'planned_finish' => 'date',
+
+            'planned_qty' => 'decimal:4',
+            'completed_qty' => 'decimal:4',
+        ];
+    }
+
     public function finishedGood(): BelongsTo
     {
         return $this->belongsTo(Item::class, 'finished_good_item_id');

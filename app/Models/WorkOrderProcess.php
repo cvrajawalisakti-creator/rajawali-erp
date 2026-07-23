@@ -11,9 +11,17 @@ class WorkOrderProcess extends Model
         'work_order_id',
         'process_id',
         'sequence',
-        'standard_time',
+        'parameter_value',
+        'parameter_unit',
         'remarks',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'parameter_value' => 'decimal:4',
+        ];
+    }
 
     public function workOrder(): BelongsTo
     {

@@ -26,14 +26,20 @@ return new class extends Migration
 
             $table->integer('sequence');
 
-            $table->decimal('standard_time', 10, 2)
+            $table->decimal('parameter_value', 18, 4)
+                ->nullable();
+
+            $table->string('parameter_unit')
                 ->nullable();
 
             $table->text('remarks')->nullable();
 
             $table->timestamps();
 
-            $table->index('sequence');
+            $table->index([
+                'work_order_id',
+                'sequence',
+        ]);
         });
     }
 

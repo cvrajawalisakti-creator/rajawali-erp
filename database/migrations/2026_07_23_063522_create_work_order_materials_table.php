@@ -26,7 +26,10 @@ return new class extends Migration
 
             $table->integer('sequence');
 
-            $table->decimal('quantity', 18, 4);
+            $table->decimal('required_qty', 18, 4);
+
+            $table->decimal('issued_qty', 18, 4)
+                ->default(0);
 
             $table->string('unit');
 
@@ -34,7 +37,10 @@ return new class extends Migration
 
             $table->timestamps();
 
-            $table->index('sequence');
+            $table->index([
+                'work_order_id',
+                'sequence',
+            ]);
         });
     }
 
